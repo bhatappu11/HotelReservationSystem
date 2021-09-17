@@ -44,18 +44,17 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 			  if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) numOfWeekends++;
 			  else numOfWeekdays++;
 		  });
-
-	Hotel cheapestHotel = hotelList.stream()
-						.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends)))
-						.orElse(null);
-	double cheapestPrice = cheapestHotel.getTotalPrice(numOfWeekdays,numOfWeekends);
-	System.out.println("Minimum Price is : "+cheapestPrice);
-	Predicate<Hotel> isMinimum = (hotel) -> (hotel.getTotalPrice(numOfWeekdays,numOfWeekends) == cheapestPrice)?true:false; 
-	List<Hotel> cheapestHotels = hotelList.stream()
-								 .filter(isMinimum)
-								 .collect(Collectors.toList());
-	return cheapestHotels;
-	}
+		Hotel cheapestHotel = hotelList.stream()
+							.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends)))
+							.orElse(null);
+		double cheapestPrice = cheapestHotel.getTotalPrice(numOfWeekdays,numOfWeekends);
+		System.out.println("Minimum Price is : "+cheapestPrice);
+		Predicate<Hotel> isMinimum = (hotel) -> (hotel.getTotalPrice(numOfWeekdays,numOfWeekends) == cheapestPrice)?true:false; 
+		List<Hotel> cheapestHotels = hotelList.stream()
+									 .filter(isMinimum)
+									 .collect(Collectors.toList());
+		return cheapestHotels;
+		}
 
 	@Override
 	public String toString() {
@@ -69,6 +68,24 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
 				   .orElse(null);
 		
+	}
+
+	@Override
+	public Hotel getBestRatedHotel(String startDate, String endDate) {
+		Hotel bestRated = hotelList.stream()
+				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
+				   .orElse(null);
+		LocalDate date1=DateServiceProvider.dateParser(startDate);
+		LocalDate date2=DateServiceProvider.dateParser(endDate);
+		Stream.iterate(date1, date -> date.plusDays(1))
+		  .limit(ChronoUnit.DAYS.between(date1, date2)+1)
+		  .forEach(date -> {
+			  if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) numOfWeekends++;
+			  else numOfWeekdays++;
+		  });
+		
+		System.out.print("Total price: "+bestRated.getTotalPrice(numOfWeekdays, numOfWeekends));
+		return bestRated;
 	}
 	
 	
