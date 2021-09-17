@@ -1,5 +1,7 @@
 package com.bridgelabz.hotelreservation;
 
+import java.time.DayOfWeek;
+
 public class Hotel {
 	private String hotelName;
 	private Double weekdayPrice;
@@ -28,11 +30,16 @@ public class Hotel {
 	public void setWeekendPrice(Double weekendPrice) {
 		this.weekendPrice = weekendPrice;
 	}
+	
+	public Double getTotalPrice(int numOfWeekdays, int numOfWeekends) {
+		return this.weekdayPrice*numOfWeekdays + this.weekendPrice*numOfWeekends;
+	}
 	@Override
 	public String toString() {
-		return "Hotel [HotelName=" + hotelName + ", WeekdayPrice=" + weekdayPrice + ", WeekendPrice=" + weekendPrice
+		return "Hotel [hotelName=" + hotelName + ", weekdayPrice=" + weekdayPrice + ", weekendPrice=" + weekendPrice
 				+ "]";
 	}
+	
 	
 	
 	
