@@ -20,8 +20,8 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		this.hotelList = new LinkedList<>();
 	}
 
-	public boolean addHotel(String hotelName, Double weekdayPrice, Double weekendPrice) {
-			Hotel hotel = new Hotel(hotelName,weekdayPrice,weekendPrice);
+	public boolean addHotel(String hotelName, Double weekdayPrice, Double weekendPrice,int ratings) {
+			Hotel hotel = new Hotel(hotelName,weekdayPrice,weekendPrice,ratings);
 			int oldSize = hotelList.size();
 			hotelList.add(hotel);
 			System.out.println(hotel);
