@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-public class DateServiceProvider {
 
-	public static long getNumOfDays(String Date1, String Date2) {
+public class DateServiceProvider {
+	public static LocalDate dateParser(String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMuuuu");
-		LocalDate startDate = LocalDate.parse(Date1,formatter);
-		LocalDate endDate =LocalDate.parse(Date2,formatter);
+		LocalDate parsedDate = LocalDate.parse(date,formatter);
+		return parsedDate;
+	}
+	public static long getNumOfDays(String Date1, String Date2) {
+		LocalDate startDate = dateParser(Date1);
+		LocalDate endDate = dateParser(Date2);
 		Period period = Period.between(startDate, endDate);
 		return period.getDays()+1;
 	}
