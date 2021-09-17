@@ -49,7 +49,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 						.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends)))
 						.orElse(null);
 	double cheapestPrice = cheapestHotel.getTotalPrice(numOfWeekdays,numOfWeekends);
-	System.out.println("the minimum price is : "+cheapestPrice);
+	System.out.println("Minimum Price is : "+cheapestPrice);
 	Predicate<Hotel> isMinimum = (hotel) -> (hotel.getTotalPrice(numOfWeekdays,numOfWeekends) == cheapestPrice)?true:false; 
 	List<Hotel> cheapestHotels = hotelList.stream()
 								 .filter(isMinimum)
