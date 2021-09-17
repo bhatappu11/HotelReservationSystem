@@ -18,6 +18,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 			Hotel hotel = new Hotel(hotelName,weekdayPrice,weekendPrice);
 			int oldSize = hotelList.size();
 			hotelList.add(hotel);
+			System.out.println(hotel);
 			int newSize = hotelList.size();
 			if(oldSize < newSize)
 				return true;
