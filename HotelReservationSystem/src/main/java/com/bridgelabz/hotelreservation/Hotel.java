@@ -4,46 +4,79 @@ import java.time.DayOfWeek;
 
 public class Hotel {
 	private String hotelName;
-	private Double weekdayPrice;
-	private Double weekendPrice;
+	private Double regularWeekdayPrice;
+	private Double regularWeekendPrice;
+	private Double rewardWeekdayPrice;
+	private Double rewardWeekendPrice;
 	private int ratings;
 	
-	public Hotel(String hotelName, Double weekdayPrice, Double weekendPrice,int ratings) {
+	
+	public Hotel(String hotelName, Double regularWeekdayPrice, Double regularWeekendPrice, Double rewardWeekdayPrice,
+			Double rewardWeekendPrice, int ratings) {
+		super();
 		this.hotelName = hotelName;
-		this.weekdayPrice = weekdayPrice;
-		this.weekendPrice = weekendPrice;
+		this.regularWeekdayPrice = regularWeekdayPrice;
+		this.regularWeekendPrice = regularWeekendPrice;
+		this.rewardWeekdayPrice = rewardWeekdayPrice;
+		this.rewardWeekendPrice = rewardWeekendPrice;
 		this.ratings = ratings;
 	}
+	
 	public String getHotelName() {
 		return hotelName;
 	}
+
 	public void setHotelName(String hotelName) {
 		this.hotelName = hotelName;
 	}
-	public Double getWeekdayPrice() {
-		return weekdayPrice;
+
+	public Double getRegularWeekdayPrice() {
+		return regularWeekdayPrice;
 	}
-	public void setWeekdayPrice(Double weekdayPrice) {
-		this.weekdayPrice = weekdayPrice;
+
+	public void setRegularWeekdayPrice(Double regularWeekdayPrice) {
+		this.regularWeekdayPrice = regularWeekdayPrice;
 	}
-	public Double getWeekendPrice() {
-		return weekendPrice;
+
+	public Double getRegularWeekendPrice() {
+		return regularWeekendPrice;
 	}
-	public void setWeekendPrice(Double weekendPrice) {
-		this.weekendPrice = weekendPrice;
-	}	
+
+	public void setRegularWeekendPrice(Double regularWeekendPrice) {
+		this.regularWeekendPrice = regularWeekendPrice;
+	}
+
+	public Double getRewardWeekdayPrice() {
+		return rewardWeekdayPrice;
+	}
+
+	public void setRewardWeekdayPrice(Double rewardWeekdayPrice) {
+		this.rewardWeekdayPrice = rewardWeekdayPrice;
+	}
+
+	public Double getRewardWeekendPrice() {
+		return rewardWeekendPrice;
+	}
+
+	public void setRewardWeekendPrice(Double rewardWeekendPrice) {
+		this.rewardWeekendPrice = rewardWeekendPrice;
+	}
+
 	public int getRatings() {
 		return ratings;
 	}
+
 	public void setRatings(int ratings) {
 		this.ratings = ratings;
 	}
-	public Double getTotalPrice(int numOfWeekdays, int numOfWeekends) {
-		return this.weekdayPrice*numOfWeekdays + this.weekendPrice*numOfWeekends;
+
+	public Double getTotalPrice(int numOfWeekdays, int numOfWeekends, CustomerType cType) {
+		if(cType == CustomerType.REGULAR) return (regularWeekdayPrice*numOfWeekdays + regularWeekendPrice*numOfWeekends);
+		return (rewardWeekdayPrice*numOfWeekdays + rewardWeekendPrice*numOfWeekends);
 	}
 	@Override
 	public String toString() {
-		return "Hotel [hotelName=" + hotelName + ", weekdayPrice=" + weekdayPrice + ", weekendPrice=" + weekendPrice
+		return "Hotel [hotelName=" + hotelName + ", weekdayPrice=" + regularWeekdayPrice + ", weekendPrice=" + regularWeekendPrice
 				+ ", ratings=" + ratings + "]";
 	}
 	
