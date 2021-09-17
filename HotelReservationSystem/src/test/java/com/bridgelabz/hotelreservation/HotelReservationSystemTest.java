@@ -23,7 +23,7 @@ public class HotelReservationSystemTest {
 		hotel.addHotel("Bridgewood",150.0,50.0,4);
 		hotel.addHotel("Ridgewood",220.0,150.0,5);
 		List<Hotel> cheapestHotels = hotel.getCheapestHotel("10Sep2021", "11Sep2021");
-		System.out.println(cheapestHotels);
+		System.out.println("cheapest hotels: "+cheapestHotels);
 	}
 	
 	@Test
@@ -33,6 +33,16 @@ public class HotelReservationSystemTest {
 		hotel.addHotel("Bridgewood",150.0,50.0,4);
 		hotel.addHotel("Ridgewood",220.0,150.0,5);
 		Hotel cheapestBestRatedHotel = hotel.getCheapestBestRatedHotel("10Sep2021", "11Sep2021");
-		System.out.println(cheapestBestRatedHotel);
+		System.out.println("cheapest best rated: "+cheapestBestRatedHotel);
+	}
+	
+	@Test
+	public void givenDateRange_find_BestRatedHotel() {
+		HotelReservationServiceIF hotel = new HotelReservationServiceImpl();
+		hotel.addHotel("Lakewood",110.0,90.0,3);
+		hotel.addHotel("Bridgewood",150.0,50.0,4);
+		hotel.addHotel("Ridgewood",220.0,150.0,5);
+		Hotel bestRatedHotel = hotel.getBestRatedHotel("10Sep2021", "11Sep2021");
+		System.out.println("Best rated: "+bestRatedHotel);
 	}
 }
