@@ -27,13 +27,19 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 	}
 
 	@Override
-	public Hotel getCheapestHotel(LocalDate startDate, LocalDate endDate) {
-		Period period = Period.between(startDate, endDate);
-		int numOfDays = period.getDays();
+	public Hotel getCheapestHotel(String startDate, String endDate) {
+		long numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
 		Hotel hotel = hotelList.stream().min((h1,h2) -> {
 			return (int) (h1.getWeekdayPrice() - h2.getWeekdayPrice());
 		}).orElse(null);
-		
+		System.out.println("Total price: "+(hotel.getWeekdayPrice()*numOfDays));
 		return hotel;
 	}
+
+	@Override
+	public String toString() {
+		return "HotelReservationServiceImpl [hotelList=" + hotelList + "]";
+	}
+	
+	
 }

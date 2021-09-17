@@ -4,5 +4,5 @@ import java.time.LocalDate;
 
 public interface HotelReservationServiceIF {
 	public boolean addHotel(String hotelName,Double weekdayPrice,Double weekendPrice);
-	public Hotel getCheapestHotel(LocalDate startDate,LocalDate endDate);
+	public Hotel getCheapestHotel(String startDate,String endDate);
 }
