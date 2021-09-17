@@ -16,11 +16,24 @@ public class DateServiceProvider {
 		LocalDate parsedDate = LocalDate.parse(date,formatter);
 		return parsedDate;
 	}
-	public static long getNumOfDays(String date1, String date2) {
+	public static int getNumOfDays(String date1, String date2) {
 		LocalDate startDate = dateParser(date1);
 		LocalDate endDate = dateParser(date2);
 		Period period = Period.between(startDate, endDate);
 		return period.getDays()+1;
 	}
-	
+	public static int getNumOfWeekdays(String date1, String date2) {
+		numOfWeekdays =0;
+		numOfWeekends =0;
+		LocalDate startDate = dateParser(date1);
+		LocalDate endDate = dateParser(date2);
+		Stream.iterate(startDate, date -> date.plusDays(1))
+		  .limit(ChronoUnit.DAYS.between(startDate, endDate)+1)
+		  .forEach(date -> {
+			  if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) numOfWeekends++;
+			  else numOfWeekdays++;
+		  });
+		
+		return numOfWeekdays;
+	}
 }

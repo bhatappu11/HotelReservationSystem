@@ -35,15 +35,9 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 
 	@Override
 	public List<Hotel> getCheapestHotel(String startDate, String endDate) {
-		long numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
-		LocalDate date1=DateServiceProvider.dateParser(startDate);
-		LocalDate date2=DateServiceProvider.dateParser(endDate);
-		Stream.iterate(date1, date -> date.plusDays(1))
-		  .limit(ChronoUnit.DAYS.between(date1, date2)+1)
-		  .forEach(date -> {
-			  if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) numOfWeekends++;
-			  else numOfWeekdays++;
-		  });
+		int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
+		numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
+		numOfWeekends = numOfDays - numOfWeekdays;
 		Hotel cheapestHotel = hotelList.stream()
 							.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends)))
 							.orElse(null);
@@ -75,15 +69,9 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		Hotel bestRated = hotelList.stream()
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
 				   .orElse(null);
-		LocalDate date1=DateServiceProvider.dateParser(startDate);
-		LocalDate date2=DateServiceProvider.dateParser(endDate);
-		Stream.iterate(date1, date -> date.plusDays(1))
-		  .limit(ChronoUnit.DAYS.between(date1, date2)+1)
-		  .forEach(date -> {
-			  if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY) || date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) numOfWeekends++;
-			  else numOfWeekdays++;
-		  });
-		
+		int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
+		numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
+		numOfWeekends = numOfDays - numOfWeekdays;
 		System.out.print("Total price: "+bestRated.getTotalPrice(numOfWeekdays, numOfWeekends));
 		return bestRated;
 	}
