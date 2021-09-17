@@ -20,35 +20,40 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		this.hotelList = new LinkedList<>();
 	}
 
-	public boolean addHotel(String hotelName, Double regularWeekdayPrice, Double regularWeekendPrice,Double rewardWeekdayPrice,Double rewardWeekendPrice,int ratings) {
+	public void addHotel(String hotelName, Double regularWeekdayPrice, Double regularWeekendPrice,Double rewardWeekdayPrice,Double rewardWeekendPrice,int ratings) {
+		try {
+			if(hotelName.length() == 0) throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
 			Hotel hotel = new Hotel(hotelName,regularWeekdayPrice,regularWeekendPrice,rewardWeekdayPrice, rewardWeekendPrice, ratings);
-			int oldSize = hotelList.size();
 			hotelList.add(hotel);
-			System.out.println(hotel);
-			int newSize = hotelList.size();
-			if(oldSize < newSize)
-				return true;
-			else 
-				return false;
-			
+		}
+		catch(NullPointerException e) {
+			throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_NULL, "Null string is passed invalid");
+		}
 	}
 
 	@Override
 	public List<Hotel> getCheapestHotel(String startDate, String endDate,CustomerType cType) {
-		int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
-		numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
-		numOfWeekends = numOfDays - numOfWeekdays;
-		Hotel cheapestHotel = hotelList.stream()
-							.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends,cType).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends,cType)))
-							.orElse(null);
-		double cheapestPrice = cheapestHotel.getTotalPrice(numOfWeekdays,numOfWeekends,cType);
-		System.out.println("Minimum Price is : "+cheapestPrice);
-		Predicate<Hotel> isMinimum = (hotel) -> (hotel.getTotalPrice(numOfWeekdays,numOfWeekends,cType) == cheapestPrice)?true:false; 
-		List<Hotel> cheapestHotels = hotelList.stream()
-									 .filter(isMinimum)
-									 .collect(Collectors.toList());
-		return cheapestHotels;
+		try {
+			if(startDate.length() == 0 || endDate.length() == 0)
+				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
+			int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
+			numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
+			numOfWeekends = numOfDays - numOfWeekdays;
+			Hotel cheapestHotel = hotelList.stream()
+								.min((h1,h2) -> h1.getTotalPrice(numOfWeekdays,numOfWeekends,cType).compareTo(h2.getTotalPrice(numOfWeekdays,numOfWeekends,cType)))
+								.orElse(null);
+			double cheapestPrice = cheapestHotel.getTotalPrice(numOfWeekdays,numOfWeekends,cType);
+			System.out.println("Minimum Price is : "+cheapestPrice);
+			Predicate<Hotel> isMinimum = (hotel) -> (hotel.getTotalPrice(numOfWeekdays,numOfWeekends,cType) == cheapestPrice)?true:false; 
+			List<Hotel> cheapestHotels = hotelList.stream()
+										 .filter(isMinimum)
+										 .collect(Collectors.toList());
+			return cheapestHotels;
+			}
+		catch(NullPointerException e) {
+			throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_NULL, "Null string is passed invalid");
 		}
+	}
 
 	@Override
 	public String toString() {
@@ -57,23 +62,38 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 
 	@Override
 	public Hotel getCheapestBestRatedHotel(String startDate, String endDate,CustomerType cType) {
-		List<Hotel> cheapestHotels = getCheapestHotel(startDate,endDate,cType);
-		return cheapestHotels.stream()
+		try {
+			if(startDate.length() == 0 || endDate.length() == 0)
+				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
+			List<Hotel> cheapestHotels = getCheapestHotel(startDate,endDate,cType);
+			return cheapestHotels.stream()
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
 				   .orElse(null);
+		}
+		catch(NullPointerException e) {
+			throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_NULL, "Null string is passed invalid");
+		}
 		
 	}
 
 	@Override
 	public Hotel getBestRatedHotel(String startDate, String endDate,CustomerType cType) {
-		Hotel bestRated = hotelList.stream()
+		try {
+			if(startDate.length() == 0 || endDate.length() == 0)
+				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
+		
+			Hotel bestRated = hotelList.stream()
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
 				   .orElse(null);
-		int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
-		numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
-		numOfWeekends = numOfDays - numOfWeekdays;
-		System.out.print("Total price: "+bestRated.getTotalPrice(numOfWeekdays, numOfWeekends,cType));
-		return bestRated;
+			int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
+			numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
+			numOfWeekends = numOfDays - numOfWeekdays;
+			System.out.print("Total price: "+bestRated.getTotalPrice(numOfWeekdays, numOfWeekends,cType));
+			return bestRated;
+		}
+		catch(NullPointerException e) {
+			throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_NULL, "Null string is passed invalid");
+	}
 	}
 	
 	
