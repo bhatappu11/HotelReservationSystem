@@ -61,6 +61,15 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 	public String toString() {
 		return "HotelReservationServiceImpl [hotelList=" + hotelList + "]";
 	}
+
+	@Override
+	public Hotel getCheapestBestRatedHotel(String startDate, String endDate) {
+		List<Hotel> cheapestHotels = getCheapestHotel(startDate,endDate);
+		return cheapestHotels.stream()
+				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
+				   .orElse(null);
+		
+	}
 	
 	
 }
