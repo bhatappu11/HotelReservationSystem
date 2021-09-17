@@ -5,14 +5,16 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class HotelReservationSystemTest {
 	
 	@Test
 	public void givenHotelDetails_WhenProper_ShouldReturnTrue() {
-		HotelReservationServiceIF hotel = new HotelReservationServiceImpl();
-		boolean result = hotel.addHotel("Lakewood", 100.0, 110.0,80.0,80.0,3);
-		Assert.assertTrue(result);
+		HotelReservationServiceImpl hotel = new HotelReservationServiceImpl();
+		int oldSize = hotel.hotelList.size();
+		hotel.addHotel("Lakewood", 100.0, 110.0,80.0,80.0,3);
+		Assert.assertSame(oldSize+1,hotel.hotelList.size());
 		
 	}
 	
@@ -89,6 +91,41 @@ public class HotelReservationSystemTest {
 		System.out.println(bestRatedHotel);
 		System.out.println();
 		Assert.assertEquals("Ridgewood", bestRatedHotel.getHotelName());
+	}
+	
+	@Test
+	public void givenDateRange_IfNull_ShouldThrowException() {
+		HotelReservationServiceIF hotel = new HotelReservationServiceImpl();
+		hotel.addHotel("Lakewood",110.0,90.0,80.0,80.0,3);
+		hotel.addHotel("Bridgewood",150.0,50.0,110.0,50.0,4);
+		hotel.addHotel("Ridgewood",220.0,150.0,100.0,40.0,5);
+		ExpectedException exceptionRule = ExpectedException.none();
+		exceptionRule.expect(HotelManagementException.class);
+		try {
+			Hotel resultHotel = hotel.getBestRatedHotel(null,"12Sep2020",CustomerType.REWARD);
+		}
+		catch(HotelManagementException e) {
+			Assert.assertEquals(HotelManagementException.exceptionType.ENTERED_NULL, e.etype);
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void givenDateRange_IfEmpty_ShouldThrowException() {
+		HotelReservationServiceIF hotel = new HotelReservationServiceImpl();
+		hotel.addHotel("Lakewood",110.0,90.0,80.0,80.0,3);
+		hotel.addHotel("Bridgewood",150.0,50.0,110.0,50.0,4);
+		hotel.addHotel("Ridgewood",220.0,150.0,100.0,40.0,5);
+		ExpectedException exceptionRule = ExpectedException.none();
+		exceptionRule.expect(HotelManagementException.class);
+		try {
+			Hotel resultHotel = hotel.getBestRatedHotel("","12Sep2020",CustomerType.REWARD);
+		}
+		catch(HotelManagementException e) {
+			Assert.assertEquals(HotelManagementException.exceptionType.ENTERED_EMPTY, e.etype);
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
