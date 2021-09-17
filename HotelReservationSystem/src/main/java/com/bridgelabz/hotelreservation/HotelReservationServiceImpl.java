@@ -13,8 +13,15 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 	}
 
 	@Override
-	public void addHotel(String hotelName, Double weekdayPrice, Double weekendPrice) {
+	public boolean addHotel(String hotelName, Double weekdayPrice, Double weekendPrice) {
 			Hotel hotel = new Hotel(hotelName,weekdayPrice,weekendPrice);
+			int oldSize = hotelList.size();
 			hotelList.add(hotel);
+			int newSize = hotelList.size();
+			if(oldSize < newSize)
+				return true;
+			else 
+				return false;
+			
 	}
 }
