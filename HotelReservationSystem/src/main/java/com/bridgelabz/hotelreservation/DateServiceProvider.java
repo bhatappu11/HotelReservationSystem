@@ -5,12 +5,31 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 
 public class DateServiceProvider {
 	private static int numOfWeekends=0;
 	private static int numOfWeekdays=0;
+	
+	private static final String DATE_REGEX = "^[0-3][0-9][A-Z][a-z]{2}(202)[0-9]$";
+	
+	@FunctionalInterface
+	interface Validation{
+		boolean inputCheck(String regex, String input);
+	}
+	static Validation dateValidator = (String regex, String input) -> { 
+		boolean check= Pattern.matches(regex,input);
+		return check;
+	};
+	
+	public boolean getDateFormate(String date1, String date2) {
+		if((dateValidator.inputCheck(DATE_REGEX,date1) && dateValidator.inputCheck(DATE_REGEX,date2))) return true;
+		System.out.println("enter correct date");
+		return false;
+	}
+	
 	public static LocalDate dateParser(String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMuuuu");
 		LocalDate parsedDate = LocalDate.parse(date,formatter);

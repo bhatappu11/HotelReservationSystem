@@ -15,7 +15,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 	List<Hotel> hotelList;
 	int numOfWeekdays = 0, numOfWeekends = 0;
 	
-	
+	DateServiceProvider dateService = new DateServiceProvider();
 	public HotelReservationServiceImpl() {
 		this.hotelList = new LinkedList<>();
 	}
@@ -36,6 +36,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		try {
 			if(startDate.length() == 0 || endDate.length() == 0)
 				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
+			if(!dateService.getDateFormate(startDate, endDate)) return null;
 			int numOfDays = DateServiceProvider.getNumOfDays(startDate,endDate);
 			numOfWeekdays = DateServiceProvider.getNumOfWeekdays(startDate,endDate);
 			numOfWeekends = numOfDays - numOfWeekdays;
@@ -65,6 +66,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		try {
 			if(startDate.length() == 0 || endDate.length() == 0)
 				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
+			if(!dateService.getDateFormate(startDate, endDate)) return null;
 			List<Hotel> cheapestHotels = getCheapestHotel(startDate,endDate,cType);
 			return cheapestHotels.stream()
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
@@ -81,7 +83,7 @@ public class HotelReservationServiceImpl implements HotelReservationServiceIF {
 		try {
 			if(startDate.length() == 0 || endDate.length() == 0)
 				throw new HotelManagementException(HotelManagementException.exceptionType.ENTERED_EMPTY, "Empty string is passed invalid");
-		
+			if(!dateService.getDateFormate(startDate, endDate)) return null;
 			Hotel bestRated = hotelList.stream()
 				   .max((h1,h2) -> h1.getRatings()-h2.getRatings())
 				   .orElse(null);
